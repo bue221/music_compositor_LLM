@@ -1,7 +1,7 @@
 from langgraph.graph import StateGraph, END
 
-from states.main import MusicState
-from graph.nodes import (
+from src.states.compositor_state import MusicState
+from src.graphs.compositor_music.nodes import (
     melody_generator,
     harmony_generator,
     rhythm_generator,

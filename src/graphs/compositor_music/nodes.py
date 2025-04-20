@@ -4,8 +4,8 @@ import music21
 import random
 import tempfile
 
-from states.main import MusicState
-from graph.config import llm
+from src.states.compositor_state import MusicState
+from src.graphs.compositor_music.config import llm
 
 
 def melody_generator(state: MusicState) -> Dict:
