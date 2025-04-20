@@ -1,5 +1,7 @@
 # Music Compositor
 
+![image](https://github.com/user-attachments/assets/dec72ce8-9806-40a4-b727-3831e7bcb584)
+
 A modern web application for music composition with an intuitive interface and powerful features.
 
 ## 🎹 Features
