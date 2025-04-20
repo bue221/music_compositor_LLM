@@ -1,12 +1,20 @@
-from langgraph.graph import StateGraph
+from typing_extensions import TypedDict
 
 
-class MusicState(StateGraph):
+class InputState(TypedDict):
+    musician_input: str
+    style: str
+
+
+class OutputState(TypedDict):
     musician_input: str
     melody: str
-    rhythm: str
     harmony: str
-    output: str
+    rhythm: str
     style: str
     composition: str
     midi_file: str
+
+
+class MusicState(InputState, OutputState):
+    pass

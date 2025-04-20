@@ -1,6 +1,6 @@
 {
     "graphs": {
-      "music_composer": "./graph/main.py:app"
+      "music_composer": "./src/graphs/compositor_music/main.py:app"
     },
     "env": ".env",
     "python_version": "3.11",

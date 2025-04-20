@@ -23,3 +23,5 @@ __pycache__
 *.jsonl.tar.xz
 *.jsonl.tar.lzma
 *.jsonl.tar.lzma.gz
+
+.langgraph_api

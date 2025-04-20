@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, END
 
-from src.states.compositor_state import MusicState
+from src.states.compositor_state import MusicState, InputState, OutputState
 from src.graphs.compositor_music.nodes import (
     melody_generator,
     harmony_generator,
@@ -9,7 +9,7 @@ from src.graphs.compositor_music.nodes import (
     midi_converter,
 )
 
-workflow = StateGraph(MusicState)
+workflow = StateGraph(MusicState, input=InputState, output=OutputState)
 
 workflow.add_node("melody_generator", melody_generator)
 workflow.add_node("harmony_creator", harmony_generator)
