@@ -1,0 +1,8 @@
+{
+    "graphs": {
+      "music_composer": "./graph/main.py:app"
+    },
+    "env": ".env",
+    "python_version": "3.11",
+    "dependencies": ["."]
+  }
