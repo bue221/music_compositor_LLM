@@ -2,16 +2,26 @@ from typing import Dict
 from langchain.prompts import ChatPromptTemplate
 import music21
 import random
-import tempfile
+import datetime
 
 from src.states.compositor_state import MusicState
 from src.graphs.compositor_music.config import llm
+from src.graphs.compositor_music.constants import scales, chords
 
 
 def melody_generator(state: MusicState) -> Dict:
     prompt = ChatPromptTemplate.from_template(
-        "Genera la melodia base para la siguiente entrada: {input}. "
-        "Representando las notas como strings en el formato music21."
+        "Crea una melodía sofisticada inspirada en las técnicas compositivas de Bach y Beethoven. "
+        "La melodía debe:\n"
+        "- Tener una duración mínima de 30 segundos\n"
+        "- Incluir elementos de contrapunto\n"
+        "- Utilizar escalas y modos apropiados\n"
+        "- Tener una estructura musical clara (ej: forma A-B-A)\n"
+        "- Incluir variaciones en dinámica y articulación\n"
+        "- Combinar movimientos por grados conjuntos y saltos\n"
+        "- Considerar principios de conducción de voces\n"
+        "Contexto de entrada: {input}\n"
+        "Representa las notas como strings en formato music21."
     )
 
     chain = prompt | llm
@@ -22,8 +32,14 @@ def melody_generator(state: MusicState) -> Dict:
 
 def harmony_generator(state: MusicState) -> Dict:
     prompt = ChatPromptTemplate.from_template(
-        "Crea la armonia para la siguiente melodia: {melody}. "
-        "Representando los acordes como strings en el formato music21."
+        "Crea una progresión armónica rica para la siguiente melodía: {melody}\n"
+        "La armonía debe:\n"
+        "- Utilizar principios de armonía funcional\n"
+        "- Incluir dominantes secundarias y modulaciones\n"
+        "- Considerar conducción de voces y resoluciones apropiadas\n"
+        "- Añadir suspensiones y notas de paso apropiadas\n"
+        "- Crear puntos de tensión y resolución\n"
+        "Representa los acordes como strings en formato music21."
     )
 
     chain = prompt | llm
@@ -34,8 +50,16 @@ def harmony_generator(state: MusicState) -> Dict:
 
 def rhythm_generator(state: MusicState) -> Dict:
     prompt = ChatPromptTemplate.from_template(
-        "Analiza y sugiere un ritmo para la siguiente melodia y armonia: "
-        "{melody} y {harmony}. Representando la duracion como strings en el formato music21."
+        "Analiza y crea un ritmo sofisticado para la siguiente melodía y armonía:\n"
+        "Melodía: {melody}\n"
+        "Armonía: {harmony}\n"
+        "El ritmo debe:\n"
+        "- Incluir sincopación y polirritmos\n"
+        "- Variar entre compases simples y compuestos\n"
+        "- Crear tensión y resolución rítmica\n"
+        "- Usar marcas de articulación apropiadas\n"
+        "- Considerar el estilo de Bach y Beethoven\n"
+        "Representa la duración como strings en formato music21."
     )
 
     chain = prompt | llm
@@ -46,8 +70,15 @@ def rhythm_generator(state: MusicState) -> Dict:
 
 def style_adapter(state: MusicState) -> Dict:
     prompt = ChatPromptTemplate.from_template(
-        "Adapta la siguiente composición al {style} style: "
-        "Melodia: {melody}, Armonia: {harmony}, Ritmo: {rhythm}. "
+        "Adapta la siguiente composición al estilo {style} manteniendo la sofisticación clásica:\n"
+        "Melodía: {melody}\n"
+        "Armonía: {harmony}\n"
+        "Ritmo: {rhythm}\n"
+        "Asegúrate que la adaptación:\n"
+        "- Preserva la integridad musical\n"
+        "- Mantiene la duración mínima de 30 segundos\n"
+        "- Conserva el nivel de complejidad de Bach/Beethoven\n"
+        "- Adapta la instrumentación apropiadamente\n"
         "Entrega el resultado en formato music21."
     )
 
@@ -68,32 +99,6 @@ def midi_converter(state: MusicState) -> Dict:
     piece = music21.stream.Score()
     description = music21.expressions.TextExpression(state["composition"])
     piece.append(description)
-
-    scales = {
-        "C major": ["C", "D", "E", "F", "G", "A", "B"],
-        "C minor": ["C", "D", "Eb", "F", "G", "Ab", "Bb"],
-        "C harmonic minor": ["C", "D", "Eb", "F", "G", "Ab", "B"],
-        "C melodic minor": ["C", "D", "Eb", "F", "G", "A", "B"],
-        "C dorian": ["C", "D", "Eb", "F", "G", "A", "Bb"],
-        "C phrygian": ["C", "Db", "Eb", "F", "G", "Ab", "Bb"],
-        "C lydian": ["C", "D", "E", "F#", "G", "A", "B"],
-        "C mixolydian": ["C", "D", "E", "F", "G", "A", "Bb"],
-        "C locrian": ["C", "Db", "Eb", "F", "Gb", "Ab", "Bb"],
-        "C whole tone": ["C", "D", "E", "F#", "G#", "A#"],
-        "C diminished": ["C", "D", "Eb", "F", "Gb", "Ab", "A", "B"],
-    }
-
-    chords = {
-        "C major": ["C4", "E4", "G4"],
-        "C minor": ["C4", "Eb4", "G4"],
-        "C diminished": ["C4", "Eb4", "Gb4"],
-        "C augmented": ["C4", "E4", "G#4"],
-        "C dominant 7th": ["C4", "E4", "G4", "Bb4"],
-        "C major 7th": ["C4", "E4", "G4", "B4"],
-        "C minor 7th": ["C4", "Eb4", "G4", "Bb4"],
-        "C half-diminished 7th": ["C4", "Eb4", "Gb4", "Bb4"],
-        "C fully diminished 7th": ["C4", "Eb4", "Gb4", "A4"],
-    }
 
     def create_melody(scale_name, duration):
         melody = music21.stream.Part()
@@ -116,7 +121,7 @@ def midi_converter(state: MusicState) -> Dict:
     user_input = state["musician_input"].lower()
 
     if "minor" in user_input:
-        scale_name = "C minor"
+        scale_name = "C minor blues"
     elif "major" in user_input:
         scale_name = "C major"
     else:
@@ -140,7 +145,10 @@ def midi_converter(state: MusicState) -> Dict:
 
     piece.insert(0, music21.tempo.MetronomeMark(number=60))
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mid") as temp_midi:
-        piece.write("midi", temp_midi.name)
+    # Generate filename with timestamp
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"music/composition_{timestamp}.mid"
 
-    return {"midi_file": temp_midi.name}
+    piece.write("midi", filename)
+
+    return {"midi_file": filename}
